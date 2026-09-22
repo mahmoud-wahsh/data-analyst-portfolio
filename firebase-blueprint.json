@@ -1,0 +1,56 @@
+{
+  "entities": {
+    "profile": {
+      "fields": {
+        "fullName": { "type": "string" },
+        "professionalTitle": { "type": "string" },
+        "headline": { "type": "string" },
+        "about": { "type": "string" },
+        "email": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "linkedin": { "type": "string" },
+        "github": { "type": "string" },
+        "availabilityText": { "type": "string" },
+        "profileImageUrl": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      }
+    },
+    "skill": {
+      "fields": {
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "order": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      }
+    },
+    "project": {
+      "fields": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "tools": { "type": "array" },
+        "published": { "type": "boolean" },
+        "order": { "type": "number" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/portfolio/profile": {
+      "schema": "profile",
+      "description": "Portfolio owner profile document"
+    },
+    "/skills/{skillId}": {
+      "schema": "skill",
+      "description": "Technical portfolio skills collection"
+    },
+    "/projects/{projectId}": {
+      "schema": "project",
+      "description": "Portfolio project case studies collection"
+    }
+  }
+}
