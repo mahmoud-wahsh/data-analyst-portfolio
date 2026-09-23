@@ -165,10 +165,10 @@ export const CvManagement: React.FC = () => {
     return (
       <div
         id="cv-management-loading"
-        className="flex flex-col items-center justify-center p-12 bg-zinc-900/60 rounded-2xl border border-zinc-800"
+        className="flex flex-col items-center justify-center p-12 bg-slate-900/60 rounded-2xl border border-slate-800"
       >
-        <Loader2 className="w-7 h-7 text-emerald-400 animate-spin mb-3" />
-        <p className="text-zinc-400 text-sm">Loading resume status...</p>
+        <Loader2 className="w-7 h-7 text-cyan-400 animate-spin mb-3" />
+        <p className="text-slate-400 text-sm">Loading resume status...</p>
       </div>
     );
   }
@@ -176,19 +176,19 @@ export const CvManagement: React.FC = () => {
   return (
     <div
       id="cv-management-container"
-      className="bg-zinc-900/80 border border-zinc-800 rounded-2xl shadow-xl overflow-hidden divide-y divide-zinc-800/80"
+      className="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-xl overflow-hidden divide-y divide-slate-800/80"
     >
       {/* Header */}
       <div className="p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <FileText className="w-5 h-5 text-emerald-400" />
+              <FileText className="w-5 h-5 text-cyan-400" />
               <h2 className="text-lg font-bold text-white tracking-tight">
                 Resume / CV Management
               </h2>
             </div>
-            <p className="text-xs sm:text-sm text-zinc-400">
+            <p className="text-xs sm:text-sm text-slate-400">
               Upload, replace, and manage your official PDF resume document.
             </p>
           </div>
@@ -198,7 +198,7 @@ export const CvManagement: React.FC = () => {
             {cvData ? (
               <span
                 id="cv-status-badge"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/10 border border-cyan-500/20 text-cyan-400"
               >
                 <FileCheck className="w-3.5 h-3.5" />
                 <span>Active & Ready</span>
@@ -206,7 +206,7 @@ export const CvManagement: React.FC = () => {
             ) : (
               <span
                 id="cv-status-badge-empty"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-zinc-800 border border-zinc-700 text-zinc-400"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-slate-800 border border-slate-700 text-slate-400"
               >
                 <span>No CV Uploaded</span>
               </span>
@@ -218,9 +218,9 @@ export const CvManagement: React.FC = () => {
         {successMessage && (
           <div
             id="cv-success-alert"
-            className="mt-4 p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-800/60 flex items-start gap-3 text-xs sm:text-sm text-emerald-300"
+            className="mt-4 p-3.5 rounded-xl bg-cyan-950/40 border border-cyan-800/60 flex items-start gap-3 text-xs sm:text-sm text-cyan-300"
           >
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
             <div className="flex-1 font-medium">{successMessage}</div>
           </div>
         )}
@@ -248,19 +248,19 @@ export const CvManagement: React.FC = () => {
 
       {/* Uploading Progress Bar Banner */}
       {isUploading && (
-        <div id="cv-upload-progress-banner" className="p-5 bg-zinc-950/80">
-          <div className="flex items-center justify-between text-xs text-zinc-300 mb-2">
+        <div id="cv-upload-progress-banner" className="p-5 bg-slate-950/80">
+          <div className="flex items-center justify-between text-xs text-slate-300 mb-2">
             <span className="flex items-center gap-2 font-medium">
-              <Loader2 className="w-4 h-4 text-emerald-400 animate-spin" />
+              <Loader2 className="w-4 h-4 text-cyan-400 animate-spin" />
               <span>Uploading CV to secure storage...</span>
             </span>
-            <span className="font-mono text-emerald-400 font-semibold">
+            <span className="font-mono text-cyan-400 font-semibold">
               {uploadProgress}%
             </span>
           </div>
-          <div className="w-full h-2 rounded-full bg-zinc-800 overflow-hidden">
+          <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
             <div
-              className="h-full bg-emerald-500 rounded-full transition-all duration-200"
+              className="h-full bg-cyan-500 rounded-full transition-all duration-200"
               style={{ width: `${uploadProgress}%` }}
             />
           </div>
@@ -273,7 +273,7 @@ export const CvManagement: React.FC = () => {
           /* Currently Uploaded CV Card */
           <div
             id="current-cv-card"
-            className="p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800 hover:border-zinc-700/80 transition-colors space-y-4"
+            className="p-5 rounded-2xl bg-slate-950/70 border border-slate-800 hover:border-cyan-500/30 transition-colors space-y-4"
           >
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div className="flex items-start gap-3.5">
@@ -281,22 +281,22 @@ export const CvManagement: React.FC = () => {
                   <FileText className="w-6 h-6" />
                 </div>
                 <div className="space-y-1">
-                  <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block">
+                  <span className="text-[11px] font-semibold text-cyan-400 uppercase tracking-wider block">
                     Current Document
                   </span>
                   <h3
                     id="cv-current-filename"
-                    className="text-base font-semibold text-zinc-100 break-all"
+                    className="text-base font-semibold text-slate-100 break-all"
                   >
                     {cvData.fileName}
                   </h3>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-zinc-400">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-slate-400">
                     <span className="flex items-center gap-1.5">
-                      <HardDrive className="w-3.5 h-3.5 text-zinc-500" />
+                      <HardDrive className="w-3.5 h-3.5 text-slate-500" />
                       <span>{formatFileSize(cvData.fileSize)}</span>
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-zinc-500" />
+                      <Calendar className="w-3.5 h-3.5 text-slate-500" />
                       <span>Uploaded {formatDate(cvData.uploadedAt)}</span>
                     </span>
                   </div>
@@ -311,9 +311,9 @@ export const CvManagement: React.FC = () => {
                   href={cvData.fileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white text-xs font-medium transition-colors border border-zinc-700"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-medium transition-colors border border-slate-700 cursor-pointer"
                 >
-                  <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+                  <ExternalLink className="w-3.5 h-3.5 text-cyan-400" />
                   <span>Preview PDF</span>
                 </a>
 
@@ -323,7 +323,7 @@ export const CvManagement: React.FC = () => {
                   type="button"
                   disabled={isUploading}
                   onClick={() => fileInputRef.current?.click()}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium transition-colors disabled:opacity-50 shadow-sm"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-semibold transition-colors disabled:opacity-50 shadow-lg shadow-cyan-950/20 cursor-pointer"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${isUploading ? 'animate-spin' : ''}`} />
                   <span>Replace CV</span>
@@ -335,7 +335,7 @@ export const CvManagement: React.FC = () => {
                   type="button"
                   disabled={isUploading || isDeleting}
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-red-950/50 text-zinc-400 hover:text-red-300 text-xs font-medium transition-colors border border-zinc-700 hover:border-red-800/60"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-red-950/50 text-slate-400 hover:text-red-300 text-xs font-medium transition-colors border border-slate-700 hover:border-red-800/60 cursor-pointer"
                   title="Remove CV"
                 >
                   <Trash2 className="w-3.5 h-3.5 text-red-400" />
@@ -354,7 +354,7 @@ export const CvManagement: React.FC = () => {
                   <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold block mb-0.5">Remove Current Resume?</span>
-                    <span className="text-zinc-400 text-xs">
+                    <span className="text-slate-400 text-xs">
                       This will remove the current CV reference. You will be able to upload a new one at any time.
                     </span>
                   </div>
@@ -365,7 +365,7 @@ export const CvManagement: React.FC = () => {
                     type="button"
                     disabled={isDeleting}
                     onClick={() => setShowDeleteConfirm(false)}
-                    className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium transition-colors"
+                    className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -374,7 +374,7 @@ export const CvManagement: React.FC = () => {
                     type="button"
                     disabled={isDeleting}
                     onClick={handleDelete}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-medium transition-colors disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer"
                   >
                     {isDeleting && <Loader2 className="w-3 h-3 animate-spin" />}
                     <span>Confirm Delete</span>
@@ -393,19 +393,19 @@ export const CvManagement: React.FC = () => {
             onClick={() => !isUploading && fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
               isDragging
-                ? 'border-emerald-500 bg-emerald-500/10 scale-[0.99]'
-                : 'border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 hover:bg-zinc-950/70'
+                ? 'border-cyan-500 bg-cyan-500/10 scale-[0.99]'
+                : 'border-slate-800 hover:border-cyan-500/40 bg-slate-950/40 hover:bg-slate-950/70'
             }`}
           >
             <div className="flex flex-col items-center justify-center space-y-3">
-              <div className="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 text-emerald-400 shadow-inner">
+              <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 text-cyan-400 shadow-inner">
                 <UploadCloud className="w-8 h-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-sm font-semibold text-zinc-200">
+                <h4 className="text-sm font-semibold text-slate-200">
                   Click or drag and drop your PDF resume
                 </h4>
-                <p className="text-xs text-zinc-400 max-w-sm mx-auto">
+                <p className="text-xs text-slate-400 max-w-sm mx-auto">
                   Upload your CV in standard PDF format (up to 15MB). The document will be securely stored and linked to your portfolio.
                 </p>
               </div>
@@ -413,9 +413,9 @@ export const CvManagement: React.FC = () => {
                 id="cv-browse-files-btn"
                 type="button"
                 disabled={isUploading}
-                className="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition-colors border border-zinc-700"
+                className="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-colors border border-slate-700 cursor-pointer"
               >
-                <FileText className="w-3.5 h-3.5 text-emerald-400" />
+                <FileText className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Select PDF Document</span>
               </button>
             </div>
@@ -423,8 +423,8 @@ export const CvManagement: React.FC = () => {
         )}
 
         {/* Informational Guidance Note */}
-        <div className="p-4 rounded-xl bg-zinc-950/40 border border-zinc-800/60 text-xs text-zinc-400 space-y-1">
-          <span className="font-semibold text-zinc-300 block">Resume Storage & Format Note</span>
+        <div className="p-4 rounded-xl bg-slate-950/40 border border-slate-800/60 text-xs text-slate-400 space-y-1">
+          <span className="font-semibold text-slate-300 block">Resume Storage & Format Note</span>
           <p className="leading-relaxed">
             Uploaded resumes are stored in Cloudinary with metadata recorded in Firestore. Only valid PDF files up to 15MB are accepted. Replacing an existing CV automatically updates the active reference.
           </p>

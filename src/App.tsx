@@ -12,7 +12,20 @@ import { Footer } from './components/Footer';
 import { AdminLogin } from './components/AdminLogin';
 import { AdminPage } from './components/AdminPage';
 import { ProfileData } from './types';
-import { subscribeProfile, INITIAL_PROFILE_DATA } from './services/profileService';
+import { subscribeProfile } from './services/profileService';
+
+const EMPTY_PROFILE_PLACEHOLDER: ProfileData = {
+  fullName: '',
+  professionalTitle: '',
+  headline: '',
+  about: '',
+  email: '',
+  whatsapp: '',
+  linkedin: '',
+  github: '',
+  availabilityText: '',
+  profileImageUrl: '',
+};
 
 type AppRoute = 'portfolio' | 'login' | 'admin';
 
@@ -30,20 +43,42 @@ export default function App() {
   const [route, setRoute] = useState<AppRoute>(getInitialRoute);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState<boolean>(true);
-  const [profile, setProfile] = useState<ProfileData>(INITIAL_PROFILE_DATA);
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [profileLoading, setProfileLoading] = useState<boolean>(true);
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const [retryTrigger, setRetryTrigger] = useState<number>(0);
 
   // Load and subscribe to real-time Profile updates from Firestore
   useEffect(() => {
+    let isSubscribed = true;
+    setProfileLoading(true);
+    setProfileError(null);
+
     const unsubscribe = subscribeProfile(
       (data) => {
+        if (!isSubscribed) return;
         setProfile(data);
+        setProfileLoading(false);
+        setProfileError(null);
       },
       (error) => {
-        console.warn('Realtime profile subscription failed, keeping current data:', error);
+        if (!isSubscribed) return;
+        console.error('Realtime profile subscription failed:', error);
+        setProfileLoading(false);
+        setProfileError(error.message || 'Failed to load profile data.');
       }
     );
-    return () => unsubscribe();
-  }, []);
+    return () => {
+      isSubscribed = false;
+      unsubscribe();
+    };
+  }, [retryTrigger]);
+
+  const handleRetryProfile = () => {
+    setProfileLoading(true);
+    setProfileError(null);
+    setRetryTrigger((prev) => prev + 1);
+  };
 
   // Monitor Firebase Authentication state
   useEffect(() => {
@@ -129,9 +164,9 @@ export default function App() {
   // Loading state while checking Firebase Auth status on protected routes
   if (authLoading && (route === 'admin' || route === 'login')) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-zinc-400">
+      <div className="min-h-screen bg-[#0b1120] flex items-center justify-center text-slate-400">
         <div className="flex items-center gap-2.5">
-          <Loader2 className="w-5 h-5 animate-spin text-emerald-400" />
+          <Loader2 className="w-5 h-5 animate-spin text-cyan-400" />
           <span className="text-sm">Verifying authentication...</span>
         </div>
       </div>
@@ -171,7 +206,7 @@ export default function App() {
 
   // Public Portfolio (Unchanged)
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-emerald-500/20 selection:text-emerald-300 font-sans antialiased">
+    <div className="min-h-screen bg-transparent text-slate-100 selection:bg-cyan-500/25 selection:text-cyan-200 font-sans antialiased">
       {/* Responsive Navbar */}
       <Navbar
         activeSection={activeSection}
@@ -184,7 +219,13 @@ export default function App() {
       {/* Main Content Area: 5 Sections */}
       <main id="main-content">
         {/* 1. Home */}
-        <HomeSection onNavigate={handleNavigateSection} profile={profile} />
+        <HomeSection
+          onNavigate={handleNavigateSection}
+          profile={profile}
+          isLoading={profileLoading}
+          error={profileError}
+          onRetry={handleRetryProfile}
+        />
 
         {/* 2. About */}
         <AboutSection profile={profile} />
@@ -196,7 +237,7 @@ export default function App() {
         <ProjectsSection />
 
         {/* 5. Contact */}
-        <ContactSection profile={profile} />
+        <ContactSection profile={profile || EMPTY_PROFILE_PLACEHOLDER} />
       </main>
 
       {/* Simple Footer */}

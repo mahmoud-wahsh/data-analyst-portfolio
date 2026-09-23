@@ -92,13 +92,13 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-center items-center px-4 py-12">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center px-4 py-12">
       {/* Back to Portfolio button */}
       <div className="w-full max-w-md mb-6">
         <button
           id="back-to-portfolio-btn"
           onClick={onBack}
-          className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Portfolio</span>
@@ -106,16 +106,16 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
       </div>
 
       {/* Admin Auth Card */}
-      <div className="w-full max-w-md bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-md">
+      <div className="w-full max-w-md bg-slate-900/85 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-md">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-3 rounded-xl bg-zinc-800 border border-zinc-700 text-emerald-400">
+          <div className="p-3 rounded-xl bg-slate-800 border border-slate-700 text-cyan-400">
             {isCreatingFirstAdmin ? <UserPlus className="w-6 h-6" /> : <Lock className="w-6 h-6" />}
           </div>
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">
               {isCreatingFirstAdmin ? 'Create First Admin' : 'Admin Login'}
             </h1>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               {isCreatingFirstAdmin
                 ? 'One-time initial administrator setup'
                 : 'Please sign in to access /admin'}
@@ -125,8 +125,8 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
 
         {/* Notice if first admin has been created */}
         {firstAdminExists && !isCreatingFirstAdmin && (
-          <div className="mb-4 p-3 rounded-lg bg-zinc-950/60 border border-zinc-800/80 text-xs text-zinc-400 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <div className="mb-4 p-3 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs text-slate-400 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
             <span>Admin account initialized. New registrations are closed.</span>
           </div>
         )}
@@ -147,12 +147,12 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
           <div>
             <label
               htmlFor="admin-email"
-              className="block text-xs font-medium text-zinc-300 uppercase tracking-wider mb-1.5"
+              className="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1.5"
             >
               Email Address
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                 <Mail className="w-4 h-4" />
               </div>
               <input
@@ -162,7 +162,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@example.com"
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-zinc-100 placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500 transition-colors"
               />
             </div>
           </div>
@@ -171,12 +171,12 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
           <div>
             <label
               htmlFor="admin-password"
-              className="block text-xs font-medium text-zinc-300 uppercase tracking-wider mb-1.5"
+              className="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1.5"
             >
               Password
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                 <Lock className="w-4 h-4" />
               </div>
               <input
@@ -186,7 +186,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-zinc-100 placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500 transition-colors"
               />
             </div>
           </div>
@@ -196,11 +196,11 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
             id={isCreatingFirstAdmin ? 'create-first-admin-btn' : 'admin-login-btn'}
             type="submit"
             disabled={isLoading}
-            className="w-full mt-2 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-zinc-400 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full mt-2 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-100 hover:bg-white text-slate-950 text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-cyan-400/50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin text-zinc-950" />
+                <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
                 <span>{isCreatingFirstAdmin ? 'Creating Admin...' : 'Logging in...'}</span>
               </>
             ) : (
@@ -211,7 +211,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
 
         {/* Toggle between Login and Create First Admin (ONLY if first admin not created) */}
         {!firstAdminExists ? (
-          <div className="mt-6 pt-5 border-t border-zinc-800/80 text-center">
+          <div className="mt-6 pt-5 border-t border-slate-800/80 text-center">
             {isCreatingFirstAdmin ? (
               <button
                 id="toggle-to-login-btn"
@@ -220,7 +220,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
                   setIsCreatingFirstAdmin(false);
                   setError(null);
                 }}
-                className="text-xs text-zinc-400 hover:text-emerald-400 transition-colors"
+                className="text-xs text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer"
               >
                 Already have an admin account? <span className="underline">Back to Login</span>
               </button>
@@ -232,15 +232,15 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onLoginSuccess }
                   setIsCreatingFirstAdmin(true);
                   setError(null);
                 }}
-                className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors font-medium"
+                className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors font-medium cursor-pointer"
               >
                 Setup: Create First Admin
               </button>
             )}
           </div>
         ) : (
-          <div className="mt-6 pt-4 border-t border-zinc-800/60 text-center">
-            <span className="text-[11px] text-zinc-500 flex items-center justify-center gap-1.5">
+          <div className="mt-6 pt-4 border-t border-slate-800/60 text-center">
+            <span className="text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
               <ShieldAlert className="w-3.5 h-3.5" />
               <span>Public account creation is disabled</span>
             </span>

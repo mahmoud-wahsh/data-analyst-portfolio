@@ -236,14 +236,14 @@ export const SkillsManagement: React.FC = () => {
       {successMessage && (
         <div
           id="skills-success-alert"
-          className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm flex items-start gap-3 animate-in fade-in"
+          className="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm flex items-start gap-3 animate-in fade-in"
         >
           <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
           <div className="flex-1 font-medium">{successMessage}</div>
           <button
             type="button"
             onClick={() => setSuccessMessage(null)}
-            className="text-emerald-400 hover:text-emerald-300"
+            className="text-cyan-400 hover:text-cyan-300 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -260,7 +260,7 @@ export const SkillsManagement: React.FC = () => {
           <button
             type="button"
             onClick={() => setErrorMessage(null)}
-            className="text-red-400 hover:text-red-300"
+            className="text-red-400 hover:text-red-300 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -268,16 +268,16 @@ export const SkillsManagement: React.FC = () => {
       )}
 
       {/* Header & Controls */}
-      <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800 shadow-xl space-y-6">
+      <div className="p-6 rounded-2xl bg-slate-900/50 border border-slate-800 shadow-xl space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+              <span className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
                 <Layers className="w-5 h-5" />
               </span>
               <h2 className="text-xl font-bold text-white tracking-tight">Skills Management</h2>
             </div>
-            <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-400 mt-1">
               Add, update, or remove technical skills displayed dynamically on your public portfolio.
             </p>
           </div>
@@ -290,12 +290,12 @@ export const SkillsManagement: React.FC = () => {
                 onClick={handleSeedDefaults}
                 disabled={isSeeding}
                 title="Save existing default skills to Firestore documents"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs sm:text-sm font-medium transition-colors border border-zinc-700 disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-medium transition-colors border border-slate-700 disabled:opacity-50 cursor-pointer"
               >
                 {isSeeding ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-emerald-400" />
+                  <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
                 ) : (
-                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  <Sparkles className="w-4 h-4 text-cyan-400" />
                 )}
                 <span>Sync Defaults to Firestore</span>
               </button>
@@ -305,7 +305,7 @@ export const SkillsManagement: React.FC = () => {
               id="add-skill-btn"
               type="button"
               onClick={handleOpenAddModal}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 text-xs sm:text-sm font-semibold transition-colors shadow-lg shadow-emerald-900/20"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs sm:text-sm font-semibold transition-colors shadow-lg shadow-cyan-950/20 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Add New Skill</span>
@@ -314,22 +314,22 @@ export const SkillsManagement: React.FC = () => {
         </div>
 
         {/* Search & Category Filter Bar */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 pt-2 border-t border-zinc-800/80">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 pt-2 border-t border-slate-800/80">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               id="skills-search-input"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search skills by name, category, or keyword..."
-              className="w-full pl-9 pr-4 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors"
+              className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -345,10 +345,10 @@ export const SkillsManagement: React.FC = () => {
                   key={category}
                   type="button"
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-400'
-                      : 'bg-zinc-950 border border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                      ? 'bg-cyan-500/15 border border-cyan-500/30 text-cyan-400'
+                      : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
                   }`}
                 >
                   {category}
@@ -361,15 +361,15 @@ export const SkillsManagement: React.FC = () => {
 
       {/* Skills Grid */}
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center p-12 rounded-2xl bg-zinc-900/30 border border-zinc-800">
-          <Loader2 className="w-8 h-8 animate-spin text-emerald-400 mb-3" />
-          <p className="text-sm text-zinc-400">Loading skills from Firestore...</p>
+        <div className="flex flex-col items-center justify-center p-12 rounded-2xl bg-slate-900/30 border border-slate-800">
+          <Loader2 className="w-8 h-8 animate-spin text-cyan-400 mb-3" />
+          <p className="text-sm text-slate-400">Loading skills from Firestore...</p>
         </div>
       ) : filteredSkills.length === 0 ? (
-        <div className="flex flex-col items-center justify-center p-12 rounded-2xl bg-zinc-900/30 border border-zinc-800 text-center">
-          <Database className="w-10 h-10 text-zinc-600 mb-3" />
-          <h3 className="text-base font-semibold text-zinc-200 mb-1">No skills found</h3>
-          <p className="text-xs sm:text-sm text-zinc-500 max-w-sm mb-4">
+        <div className="flex flex-col items-center justify-center p-12 rounded-2xl bg-slate-900/30 border border-slate-800 text-center">
+          <Database className="w-10 h-10 text-slate-600 mb-3" />
+          <h3 className="text-base font-semibold text-slate-200 mb-1">No skills found</h3>
+          <p className="text-xs sm:text-sm text-slate-500 max-w-sm mb-4">
             {searchQuery || selectedCategory !== 'All'
               ? 'Try changing your search query or category filter.'
               : 'You have not added any skills yet.'}
@@ -381,7 +381,7 @@ export const SkillsManagement: React.FC = () => {
                 setSearchQuery('');
                 setSelectedCategory('All');
               }}
-              className="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:underline cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reset filters</span>
@@ -394,36 +394,36 @@ export const SkillsManagement: React.FC = () => {
             <div
               key={skill.id || skill.name}
               id={`admin-skill-card-${skill.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-              className="p-5 rounded-2xl bg-zinc-900/50 border border-zinc-800 hover:border-zinc-700 transition-all flex flex-col justify-between group"
+              className="p-5 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/30 transition-all flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-start justify-between gap-2 mb-3">
-                  <span className="text-[11px] font-medium tracking-wide text-zinc-400 uppercase bg-zinc-950 px-2.5 py-1 rounded-md border border-zinc-800 truncate max-w-[200px]">
+                  <span className="text-[11px] font-medium tracking-wide text-slate-400 uppercase bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800 truncate max-w-[200px]">
                     {skill.category}
                   </span>
                   {typeof skill.order === 'number' && (
-                    <span className="text-[10px] text-zinc-500 bg-zinc-950/60 px-1.5 py-0.5 rounded border border-zinc-850">
+                    <span className="text-[10px] text-slate-500 bg-slate-950/60 px-1.5 py-0.5 rounded border border-slate-800">
                       #{skill.order}
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-base font-bold text-white group-hover:text-emerald-400 transition-colors mb-2">
+                <h3 className="text-base font-bold text-white group-hover:text-cyan-400 transition-colors mb-2">
                   {skill.name}
                 </h3>
 
-                <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3">
+                <p className="text-xs text-slate-400 leading-relaxed line-clamp-3">
                   {skill.description}
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-end gap-2 pt-4 mt-4 border-t border-zinc-800/80">
+              <div className="flex items-center justify-end gap-2 pt-4 mt-4 border-t border-slate-800/80">
                 <button
                   type="button"
                   id={`edit-skill-btn-${skill.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                   onClick={() => handleOpenEditModal(skill)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition-colors border border-zinc-700"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-cyan-300 text-xs font-medium transition-colors border border-slate-700 cursor-pointer"
                 >
                   <Pencil className="w-3.5 h-3.5" />
                   <span>Edit</span>
@@ -432,7 +432,7 @@ export const SkillsManagement: React.FC = () => {
                   type="button"
                   id={`delete-skill-btn-${skill.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                   onClick={() => setDeleteCandidate(skill)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-xs font-medium transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-xs font-medium transition-colors cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Delete</span>
@@ -451,21 +451,21 @@ export const SkillsManagement: React.FC = () => {
           aria-modal="true"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm animate-in fade-in"
         >
-          <div className="relative w-full max-w-lg rounded-2xl bg-zinc-900 border border-zinc-800 shadow-2xl p-6 sm:p-7 space-y-5">
+          <div className="relative w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-6 sm:p-7 space-y-5">
             {/* Modal Header */}
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-white">
                   {editingSkill ? 'Edit Skill' : 'Add New Skill'}
                 </h3>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-xs text-slate-400 mt-0.5">
                   Set the name, category, and technical description for this competency.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -474,7 +474,7 @@ export const SkillsManagement: React.FC = () => {
             <form onSubmit={handleSaveSkill} className="space-y-4">
               {/* Skill Name */}
               <div>
-                <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">
                   Skill Name <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -484,20 +484,20 @@ export const SkillsManagement: React.FC = () => {
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   placeholder="e.g., PostgreSQL, Python, Tableau, DAX"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm"
                 />
               </div>
 
               {/* Category */}
               <div>
-                <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">
                   Category <span className="text-red-400">*</span>
                 </label>
                 <select
                   id="skill-category-select"
                   value={formCategory}
                   onChange={(e) => setFormCategory(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm"
                 >
                   {COMMON_SKILL_CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -515,7 +515,7 @@ export const SkillsManagement: React.FC = () => {
                       value={customCategory}
                       onChange={(e) => setCustomCategory(e.target.value)}
                       placeholder="Type your custom category..."
-                      className="w-full px-3.5 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm"
+                      className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm"
                     />
                   </div>
                 )}
@@ -523,7 +523,7 @@ export const SkillsManagement: React.FC = () => {
 
               {/* Description */}
               <div>
-                <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">
                   Description / Key Competencies <span className="text-red-400">*</span>
                 </label>
                 <textarea
@@ -533,13 +533,13 @@ export const SkillsManagement: React.FC = () => {
                   value={formDescription}
                   onChange={(e) => setFormDescription(e.target.value)}
                   placeholder="Describe your capabilities, such as complex queries, data transformations, or reporting..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm leading-relaxed"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm leading-relaxed"
                 />
               </div>
 
               {/* Display Order */}
               <div>
-                <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">
                   Display Order (Numerical sequence on public website)
                 </label>
                 <input
@@ -549,17 +549,17 @@ export const SkillsManagement: React.FC = () => {
                   max="100"
                   value={formOrder}
                   onChange={(e) => setFormOrder(parseInt(e.target.value, 10) || 1)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-sm"
                 />
               </div>
 
               {/* Modal Actions */}
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={handleCloseModal}
                   disabled={isSaving}
-                  className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs sm:text-sm font-medium transition-colors border border-zinc-700"
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs sm:text-sm font-medium transition-colors border border-slate-700 cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -567,7 +567,7 @@ export const SkillsManagement: React.FC = () => {
                   type="submit"
                   id="save-skill-submit-btn"
                   disabled={isSaving}
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 text-xs sm:text-sm font-semibold transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs sm:text-sm font-semibold transition-colors disabled:opacity-50 cursor-pointer shadow-lg shadow-cyan-950/20"
                 >
                   {isSaving ? (
                     <>
@@ -592,18 +592,18 @@ export const SkillsManagement: React.FC = () => {
           aria-modal="true"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm animate-in fade-in"
         >
-          <div className="w-full max-w-md rounded-2xl bg-zinc-900 border border-zinc-800 shadow-2xl p-6 space-y-4">
+          <div className="w-full max-w-md rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-6 space-y-4">
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
                 <Trash2 className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="text-base font-bold text-white">Delete Skill</h3>
-                <p className="text-xs text-zinc-400">This action cannot be undone.</p>
+                <p className="text-xs text-slate-400">This action cannot be undone.</p>
               </div>
             </div>
 
-            <p className="text-sm text-zinc-300 leading-relaxed">
+            <p className="text-sm text-slate-300 leading-relaxed">
               Are you sure you want to delete{' '}
               <span className="font-semibold text-white">"{deleteCandidate.name}"</span>? It will be
               immediately removed from your public portfolio.
@@ -614,7 +614,7 @@ export const SkillsManagement: React.FC = () => {
                 type="button"
                 onClick={() => setDeleteCandidate(null)}
                 disabled={isDeleting}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs sm:text-sm font-medium transition-colors border border-zinc-700"
+                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs sm:text-sm font-medium transition-colors border border-slate-700 cursor-pointer"
               >
                 Cancel
               </button>
@@ -623,7 +623,7 @@ export const SkillsManagement: React.FC = () => {
                 id="confirm-delete-skill-btn"
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500 hover:bg-red-400 text-white text-xs sm:text-sm font-semibold transition-colors disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500 hover:bg-red-400 text-white text-xs sm:text-sm font-semibold transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {isDeleting ? (
                   <>
