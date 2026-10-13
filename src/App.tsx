@@ -7,12 +7,15 @@ import { HomeSection } from './components/HomeSection';
 import { AboutSection } from './components/AboutSection';
 import { SkillsSection } from './components/SkillsSection';
 import { ProjectsSection } from './components/ProjectsSection';
+import { ProjectDetailPage } from './components/ProjectDetailPage';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { AdminLogin } from './components/AdminLogin';
 import { AdminPage } from './components/AdminPage';
-import { ProfileData } from './types';
+import { ProfileData, ProjectItem } from './types';
 import { subscribeProfile } from './services/profileService';
+import { subscribePublishedProjects, INITIAL_PROJECTS } from './services/projectsService';
+import { findProjectBySlug, getProjectSlug } from './utils/projectUtils';
 
 const EMPTY_PROFILE_PLACEHOLDER: ProfileData = {
   fullName: '',
@@ -27,26 +30,67 @@ const EMPTY_PROFILE_PLACEHOLDER: ProfileData = {
   profileImageUrl: '',
 };
 
-type AppRoute = 'portfolio' | 'login' | 'admin';
+type RouteState =
+  | { type: 'portfolio' }
+  | { type: 'project-detail'; slug: string }
+  | { type: 'login' }
+  | { type: 'admin' };
 
-function getInitialRoute(): AppRoute {
-  const path = window.location.pathname.toLowerCase();
+function parseCurrentRoute(): RouteState {
+  const path = window.location.pathname;
   const hash = window.location.hash.toLowerCase();
 
-  if (path === '/admin' || hash === '#admin') return 'admin';
-  if (path === '/login' || hash === '#login') return 'login';
-  return 'portfolio';
+  if (path === '/admin' || hash === '#admin') return { type: 'admin' };
+  if (path === '/login' || hash === '#login') return { type: 'login' };
+
+  // Match /projects/:slug pattern in clean URL pathname
+  const projectPathMatch = path.match(/^\/projects\/([^/?#]+)/i);
+  if (projectPathMatch && projectPathMatch[1]) {
+    return {
+      type: 'project-detail',
+      slug: decodeURIComponent(projectPathMatch[1]),
+    };
+  }
+
+  // Hash-based project URL fallback (e.g. #/projects/slug or #projects/slug)
+  const hashProjectMatch = window.location.hash.match(/^#\/?projects\/([^/?#]+)/i);
+  if (hashProjectMatch && hashProjectMatch[1]) {
+    return {
+      type: 'project-detail',
+      slug: decodeURIComponent(hashProjectMatch[1]),
+    };
+  }
+
+  return { type: 'portfolio' };
 }
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>('home');
-  const [route, setRoute] = useState<AppRoute>(getInitialRoute);
+  const [route, setRoute] = useState<RouteState>(parseCurrentRoute);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState<boolean>(true);
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
   const [profileError, setProfileError] = useState<string | null>(null);
   const [retryTrigger, setRetryTrigger] = useState<number>(0);
+  const [projects, setProjects] = useState<ProjectItem[]>(INITIAL_PROJECTS);
+
+  // Subscribe to real-time published projects from Firestore (with initial fallback)
+  useEffect(() => {
+    const unsubscribe = subscribePublishedProjects(
+      (loadedProjects) => {
+        if (loadedProjects && loadedProjects.length > 0) {
+          setProjects(loadedProjects);
+        } else {
+          setProjects(INITIAL_PROJECTS);
+        }
+      },
+      (error) => {
+        console.warn('Real-time projects subscription error in App, using initial projects:', error);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
 
   // Load and subscribe to real-time Profile updates from Firestore
   useEffect(() => {
@@ -89,41 +133,81 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Listen for browser hash changes
+  // Synchronize browser history and navigation events (popstate & hashchange)
   useEffect(() => {
-    const handleHashChange = () => {
-      setRoute(getInitialRoute());
+    const handleLocationChange = () => {
+      setRoute(parseCurrentRoute());
     };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
   }, []);
 
-  // Safe navigation helper that keeps URL hash in sync
-  const navigateTo = (targetRoute: AppRoute) => {
-    setRoute(targetRoute);
-    if (targetRoute === 'admin') {
+  // Navigation helpers
+  const navigateToAuth = (target: 'admin' | 'login') => {
+    if (target === 'admin') {
       window.location.hash = 'admin';
-    } else if (targetRoute === 'login') {
-      window.location.hash = 'login';
+      setRoute({ type: 'admin' });
     } else {
-      if (window.location.hash === '#admin' || window.location.hash === '#login') {
-        window.history.replaceState(null, '', window.location.pathname);
-      }
+      window.location.hash = 'login';
+      setRoute({ type: 'login' });
     }
+  };
+
+  const navigateToProject = (projectOrSlug: ProjectItem | string) => {
+    const targetSlug =
+      typeof projectOrSlug === 'string' ? projectOrSlug : getProjectSlug(projectOrSlug);
+    const targetPath = `/projects/${targetSlug}`;
+
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState(null, '', targetPath);
+    }
+    setRoute({ type: 'project-detail', slug: targetSlug });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleBackToProjects = () => {
+    if (window.location.pathname !== '/') {
+      window.history.pushState(null, '', '/');
+    }
+    if (window.location.hash) {
+      window.location.hash = '';
+    }
+    setRoute({ type: 'portfolio' });
+    setActiveSection('projects');
+
+    setTimeout(() => {
+      const element = document.getElementById('projects');
+      if (element) {
+        const yOffset = -70;
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 60);
   };
 
   // Route Protection: Redirect unauthenticated users trying to access /admin
   useEffect(() => {
-    if (!authLoading && route === 'admin' && !currentUser) {
-      // Unauthenticated user attempted to access /admin -> redirect to login
-      navigateTo('login');
+    if (!authLoading && route.type === 'admin' && !currentUser) {
+      navigateToAuth('login');
     }
   }, [route, currentUser, authLoading]);
 
   // Handle smooth navigation to specific section ID on the portfolio
   const handleNavigateSection = (sectionId: string) => {
-    if (route !== 'portfolio') {
-      navigateTo('portfolio');
+    if (route.type !== 'portfolio') {
+      if (window.location.pathname !== '/') {
+        window.history.pushState(null, '', '/');
+      }
+      if (window.location.hash) {
+        window.location.hash = '';
+      }
+      setRoute({ type: 'portfolio' });
     }
     setActiveSection(sectionId);
     setTimeout(() => {
@@ -133,12 +217,12 @@ export default function App() {
         const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
-    }, 50);
+    }, 60);
   };
 
-  // Scroll spy to update active section in navbar automatically
+  // Scroll spy to update active section in navbar automatically on public portfolio
   useEffect(() => {
-    if (route !== 'portfolio') return;
+    if (route.type !== 'portfolio') return;
 
     const sections = ['home', 'about', 'skills', 'projects', 'contact'];
 
@@ -162,7 +246,7 @@ export default function App() {
   }, [route]);
 
   // Loading state while checking Firebase Auth status on protected routes
-  if (authLoading && (route === 'admin' || route === 'login')) {
+  if (authLoading && (route.type === 'admin' || route.type === 'login')) {
     return (
       <div className="min-h-screen bg-[#0b1120] flex items-center justify-center text-slate-400">
         <div className="flex items-center gap-2.5">
@@ -174,37 +258,77 @@ export default function App() {
   }
 
   // Protected /admin route: Only authenticated users can access
-  if (route === 'admin') {
+  if (route.type === 'admin') {
     if (currentUser) {
       return (
         <AdminPage
           user={currentUser}
-          onBackToPortfolio={() => navigateTo('portfolio')}
+          onBackToPortfolio={() => {
+            window.location.hash = '';
+            window.history.replaceState(null, '', '/');
+            setRoute({ type: 'portfolio' });
+          }}
           onLogout={() => {
-            // Logout removes access to /admin and redirects to login
-            navigateTo('login');
+            navigateToAuth('login');
           }}
         />
       );
     }
-    // Fallback while redirect effect fires
     return null;
   }
 
   // /login route
-  if (route === 'login') {
+  if (route.type === 'login') {
     return (
       <AdminLogin
-        onBack={() => navigateTo('portfolio')}
+        onBack={() => {
+          window.location.hash = '';
+          window.history.replaceState(null, '', '/');
+          setRoute({ type: 'portfolio' });
+        }}
         onLoginSuccess={() => {
-          // Redirect authenticated user to /admin
-          navigateTo('admin');
+          navigateToAuth('admin');
         }}
       />
     );
   }
 
-  // Public Portfolio (Unchanged)
+  // Dedicated Project Detail Route: /projects/:slug
+  if (route.type === 'project-detail') {
+    const currentProject = findProjectBySlug(projects, route.slug);
+
+    return (
+      <div className="min-h-screen bg-transparent text-slate-100 selection:bg-cyan-500/25 selection:text-cyan-200 font-sans antialiased">
+        <Navbar
+          activeSection="projects"
+          onNavigate={handleNavigateSection}
+          profile={profile}
+          isAuthenticated={!!currentUser}
+          onProfileClick={() => navigateToAuth('admin')}
+        />
+
+        <main id="main-content" className="pt-20">
+          <ProjectDetailPage
+            project={currentProject}
+            slug={route.slug}
+            allProjects={projects}
+            onBackToProjects={handleBackToProjects}
+            onNavigateToProject={navigateToProject}
+          />
+        </main>
+
+        <Footer
+          onNavigate={handleNavigateSection}
+          profile={profile}
+          onAdminClick={() => {
+            navigateToAuth('admin');
+          }}
+        />
+      </div>
+    );
+  }
+
+  // Public Portfolio Sectional Home Page
   return (
     <div className="min-h-screen bg-transparent text-slate-100 selection:bg-cyan-500/25 selection:text-cyan-200 font-sans antialiased">
       {/* Responsive Navbar */}
@@ -213,7 +337,7 @@ export default function App() {
         onNavigate={handleNavigateSection}
         profile={profile}
         isAuthenticated={!!currentUser}
-        onProfileClick={() => navigateTo('admin')}
+        onProfileClick={() => navigateToAuth('admin')}
       />
 
       {/* Main Content Area: 5 Sections */}
@@ -234,7 +358,10 @@ export default function App() {
         <SkillsSection />
 
         {/* 4. Projects */}
-        <ProjectsSection />
+        <ProjectsSection
+          projects={projects}
+          onViewProject={navigateToProject}
+        />
 
         {/* 5. Contact */}
         <ContactSection profile={profile || EMPTY_PROFILE_PLACEHOLDER} />
@@ -245,12 +372,7 @@ export default function App() {
         onNavigate={handleNavigateSection}
         profile={profile}
         onAdminClick={() => {
-          // If already logged in, navigate directly to admin; otherwise, redirect to login
-          if (currentUser) {
-            navigateTo('admin');
-          } else {
-            navigateTo('admin'); // triggers protected route redirect to login
-          }
+          navigateToAuth('admin');
         }}
       />
     </div>

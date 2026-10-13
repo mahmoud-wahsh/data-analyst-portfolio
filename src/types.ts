@@ -30,6 +30,9 @@ export interface ProjectItem {
   recommendations?: string;
   imageUrl?: string;
   screenshots?: string[];
+  githubUrl?: string;
+  liveUrl?: string;
+  slug?: string;
   createdAt?: string;
   updatedAt?: string;
 }

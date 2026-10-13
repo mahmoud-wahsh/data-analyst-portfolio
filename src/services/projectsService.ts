@@ -88,6 +88,9 @@ export function subscribeProjects(
             recommendations: data.recommendations || undefined,
             imageUrl: data.imageUrl || undefined,
             screenshots: Array.isArray(data.screenshots) ? data.screenshots : undefined,
+            githubUrl: data.githubUrl || undefined,
+            liveUrl: data.liveUrl || undefined,
+            slug: data.slug || undefined,
             createdAt: data.createdAt,
             updatedAt: data.updatedAt,
           };

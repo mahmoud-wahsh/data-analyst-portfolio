@@ -2,25 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Layers, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { ProjectItem } from '../types';
-import { ProjectModal } from './ProjectModal';
 import { subscribePublishedProjects, INITIAL_PROJECTS } from '../services/projectsService';
+import { getProjectSlug, getOriginalImageUrl } from '../utils/projectUtils';
 
 interface ProjectsSectionProps {
   projects?: ProjectItem[];
+  onViewProject?: (project: ProjectItem) => void;
 }
 
-// Helper to ensure the public card displays the thumbnail in its original image quality without low-quality transforms or compression
-const getOriginalImageUrl = (url: string): string => {
-  if (!url) return '';
-  if (url.includes('cloudinary.com') && url.includes('/upload/')) {
-    return url.replace(/\/upload\/(?:[a-z]{1,4}_[^/]+,?[^/]*\/)+/gi, '/upload/');
-  }
-  return url;
-};
-
-export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects: initialProjectsProp }) => {
+export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
+  projects: initialProjectsProp,
+  onViewProject,
+}) => {
   const [projects, setProjects] = useState<ProjectItem[]>(initialProjectsProp || INITIAL_PROJECTS);
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
   // Subscribe to real-time published projects from Firestore
   useEffect(() => {
@@ -44,6 +38,16 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects: init
 
     return () => unsubscribe();
   }, [initialProjectsProp]);
+
+  const handleProjectClick = (project: ProjectItem) => {
+    if (onViewProject) {
+      onViewProject(project);
+    } else {
+      const slug = getProjectSlug(project);
+      window.history.pushState(null, '', `/projects/${slug}`);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+  };
 
   return (
     <section id="projects" className="py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-slate-800/80">
@@ -76,9 +80,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects: init
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {projects.map((project, index) => {
-              const projectSlug = (project.title || `project-${index}`)
-                .toLowerCase()
-                .replace(/[^a-z0-9]/g, '-');
+              const projectSlug = getProjectSlug(project);
 
               return (
                 <motion.div
@@ -99,7 +101,16 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects: init
 
                     {/* Project Thumbnail with Original Quality & Subtle Hover Zoom */}
                     {project.imageUrl && (
-                      <div className="mb-4 rounded-lg overflow-hidden border border-slate-800 bg-slate-950/80 aspect-video flex items-center justify-center">
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => handleProjectClick(project)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') handleProjectClick(project);
+                        }}
+                        className="mb-4 rounded-lg overflow-hidden border border-slate-800 bg-slate-950/80 aspect-video flex items-center justify-center cursor-pointer"
+                        title="View Project"
+                      >
                         <img
                           src={getOriginalImageUrl(project.imageUrl)}
                           alt={project.title}
@@ -110,7 +121,15 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects: init
                     )}
 
                     {/* Project title */}
-                    <h3 className="text-xl font-bold text-slate-100 group-hover:text-cyan-300 transition-colors mb-3 leading-snug">
+                    <h3
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => handleProjectClick(project)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') handleProjectClick(project);
+                      }}
+                      className="text-xl font-bold text-slate-100 group-hover:text-cyan-300 transition-colors mb-3 leading-snug cursor-pointer"
+                    >
                       {project.title}
                     </h3>
 
@@ -142,7 +161,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects: init
                     {/* View Project button */}
                     <motion.button
                       id={`view-project-btn-${projectSlug}`}
-                      onClick={() => setSelectedProject(project)}
+                      onClick={() => handleProjectClick(project)}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.97 }}
                       transition={{ duration: 0.18, ease: 'easeOut' }}
@@ -157,12 +176,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects: init
             })}
           </div>
         )}
-
-        {/* Interactive Modal for detailed view */}
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
       </motion.div>
     </section>
   );

@@ -54,6 +54,7 @@ export const SKILLS: SkillItem[] = [
 export const PROJECTS: ProjectItem[] = [
   {
     id: 'ecommerce-cohort-analysis',
+    slug: 'ecommerce-cohort-analysis',
     title: 'E-Commerce Sales & Cohort Retention Analysis',
     description:
       'Analyzed multi-year retail transactions to track revenue growth, repeat purchase velocity, and customer lifetime value cohorts across regional markets.',
@@ -67,6 +68,7 @@ export const PROJECTS: ProjectItem[] = [
   },
   {
     id: 'healthcare-patient-wait-times',
+    slug: 'healthcare-patient-wait-times',
     title: 'Healthcare Operations & Emergency Wait Times',
     description:
       'Examined hospital patient intake records to identify department bottlenecks, peak admission cycles, and triage resource utilization patterns.',
@@ -80,6 +82,7 @@ export const PROJECTS: ProjectItem[] = [
   },
   {
     id: 'supply-chain-inventory-forecast',
+    slug: 'supply-chain-inventory-forecast',
     title: 'Supply Chain Inventory & Demand Forecasting',
     description:
       'Built an automated inventory auditing and demand forecasting model to reduce stockout instances and optimize safety stock thresholds.',
