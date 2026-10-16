@@ -17,6 +17,7 @@ import {
   Tag,
   AlertCircle,
   FolderGit2,
+  Loader2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ProjectItem } from '../types';
@@ -25,6 +26,7 @@ import { getOriginalImageUrl, getProjectSlug } from '../utils/projectUtils';
 interface ProjectDetailPageProps {
   project: ProjectItem | null;
   slug: string;
+  isLoading?: boolean;
   allProjects?: ProjectItem[];
   onBackToProjects: () => void;
   onNavigateToProject?: (slug: string) => void;
@@ -33,6 +35,7 @@ interface ProjectDetailPageProps {
 export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   project,
   slug,
+  isLoading = false,
   allProjects = [],
   onBackToProjects,
   onNavigateToProject,
@@ -83,7 +86,102 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
     };
   }, [lightboxUrl]);
 
-  // 1. Not Found State: when project URL doesn't match any project
+  // 1. Loading State (Skeleton + Spinner)
+  // Displayed while project data is being fetched or parsed, preventing any premature 'Not Found' flash
+  if (isLoading || (!project && isLoading)) {
+    return (
+      <div
+        id="project-detail-loading"
+        className="min-h-screen py-8 sm:py-12 px-4 sm:px-6 max-w-5xl mx-auto"
+        aria-busy="true"
+        aria-live="polite"
+      >
+        {/* Top Navigation & Breadcrumb Placeholder */}
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
+          <button
+            id="back-to-projects-loading-btn"
+            type="button"
+            onClick={onBackToProjects}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-sm font-medium hover:border-cyan-500/40 hover:text-cyan-300 transition-colors cursor-pointer group"
+          >
+            <ArrowLeft className="w-4 h-4 text-cyan-400 group-hover:-translate-x-0.5 transition-transform" />
+            <span>Back to Projects</span>
+          </button>
+
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-slate-400 text-xs font-mono">
+            <Loader2 className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
+            <span>Loading project details...</span>
+          </div>
+        </div>
+
+        {/* Header Skeleton */}
+        <div className="mb-10">
+          {/* Category Pill Skeleton */}
+          <div className="h-6 w-36 rounded-md bg-slate-800/70 border border-slate-700/40 animate-pulse mb-4" />
+
+          {/* Title Skeleton */}
+          <div className="h-10 sm:h-12 w-3/4 max-w-2xl rounded-xl bg-slate-800/70 border border-slate-700/40 animate-pulse mb-4" />
+
+          {/* Short Description Skeleton lines */}
+          <div className="space-y-2.5 max-w-3xl mb-6">
+            <div className="h-4 w-full rounded bg-slate-800/50 animate-pulse" />
+            <div className="h-4 w-5/6 rounded bg-slate-800/50 animate-pulse" />
+            <div className="h-4 w-2/3 rounded bg-slate-800/50 animate-pulse" />
+          </div>
+
+          {/* Action buttons placeholder */}
+          <div className="flex flex-wrap gap-3 pt-2">
+            <div className="h-10 w-32 rounded-xl bg-slate-800/60 border border-slate-700/40 animate-pulse" />
+            <div className="h-10 w-36 rounded-xl bg-slate-800/60 border border-slate-700/40 animate-pulse" />
+          </div>
+        </div>
+
+        {/* Featured Showcase Skeleton with Central Spinner & Helpful Message */}
+        <div className="mb-12 rounded-2xl border border-slate-800 bg-slate-900/60 p-6 sm:p-12 text-center relative overflow-hidden shadow-2xl">
+          <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-transparent pointer-events-none" />
+
+          <div className="flex flex-col items-center justify-center py-12 relative z-10">
+            <div className="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 mb-4 shadow-lg shadow-cyan-950/40">
+              <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
+            </div>
+            <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
+              Loading Project Details
+            </h3>
+            <p className="text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
+              Retrieving case study data and analytics insights
+              {slug ? (
+                <>
+                  {' '}for{' '}
+                  <span className="font-mono text-xs text-cyan-300 bg-slate-950/80 px-2 py-0.5 rounded border border-slate-800">
+                    /projects/{slug}
+                  </span>
+                </>
+              ) : null}
+              ...
+            </p>
+          </div>
+        </div>
+
+        {/* Grid Cards Skeleton for Sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 animate-pulse space-y-4">
+            <div className="h-6 w-32 bg-slate-800 rounded-lg" />
+            <div className="h-4 w-full bg-slate-800/60 rounded" />
+            <div className="h-4 w-4/5 bg-slate-800/60 rounded" />
+            <div className="h-4 w-3/4 bg-slate-800/60 rounded" />
+          </div>
+          <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 animate-pulse space-y-4">
+            <div className="h-6 w-40 bg-slate-800 rounded-lg" />
+            <div className="h-4 w-full bg-slate-800/60 rounded" />
+            <div className="h-4 w-5/6 bg-slate-800/60 rounded" />
+            <div className="h-4 w-2/3 bg-slate-800/60 rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Not Found State: ONLY shown when fetching is complete and no project matches the ID/slug
   if (!project) {
     const otherProjects = allProjects.filter((p) => p.published !== false);
 

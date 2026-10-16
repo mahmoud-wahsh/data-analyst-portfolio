@@ -63,10 +63,9 @@ export function subscribeProjects(
   onError?: (error: Error) => void
 ): () => void {
   const colRef = collection(db, PROJECTS_COLLECTION);
-  const q = query(colRef, orderBy('order', 'asc'));
 
   return onSnapshot(
-    q,
+    colRef,
     (snapshot) => {
       if (!snapshot.empty) {
         const projects: ProjectItem[] = snapshot.docs.map((docSnap) => {

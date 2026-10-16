@@ -74,22 +74,42 @@ export default function App() {
   const [profileError, setProfileError] = useState<string | null>(null);
   const [retryTrigger, setRetryTrigger] = useState<number>(0);
   const [projects, setProjects] = useState<ProjectItem[]>(INITIAL_PROJECTS);
+  const [projectsLoading, setProjectsLoading] = useState<boolean>(true);
 
   // Subscribe to real-time published projects from Firestore (with initial fallback)
   useEffect(() => {
+    let isSubscribed = true;
+    setProjectsLoading(true);
+
     const unsubscribe = subscribePublishedProjects(
       (loadedProjects) => {
+        if (!isSubscribed) return;
         if (loadedProjects && loadedProjects.length > 0) {
           setProjects(loadedProjects);
         } else {
           setProjects(INITIAL_PROJECTS);
         }
+        setProjectsLoading(false);
       },
       (error) => {
+        if (!isSubscribed) return;
         console.warn('Real-time projects subscription error in App, using initial projects:', error);
+        setProjectsLoading(false);
       }
     );
-    return () => unsubscribe();
+
+    // Timeout safety fallback so loading doesn't hang if offline
+    const timer = setTimeout(() => {
+      if (isSubscribed) {
+        setProjectsLoading(false);
+      }
+    }, 4000);
+
+    return () => {
+      isSubscribed = false;
+      clearTimeout(timer);
+      unsubscribe();
+    };
   }, []);
 
   // Load and subscribe to real-time Profile updates from Firestore
@@ -296,6 +316,7 @@ export default function App() {
   // Dedicated Project Detail Route: /projects/:slug
   if (route.type === 'project-detail') {
     const currentProject = findProjectBySlug(projects, route.slug);
+    const isProjectLoading = projectsLoading && !currentProject;
 
     return (
       <div className="min-h-screen bg-transparent text-slate-100 selection:bg-cyan-500/25 selection:text-cyan-200 font-sans antialiased">
@@ -311,6 +332,7 @@ export default function App() {
           <ProjectDetailPage
             project={currentProject}
             slug={route.slug}
+            isLoading={isProjectLoading}
             allProjects={projects}
             onBackToProjects={handleBackToProjects}
             onNavigateToProject={navigateToProject}
